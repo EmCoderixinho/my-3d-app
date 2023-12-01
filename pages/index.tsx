@@ -1,13 +1,24 @@
-import Link from 'next/link'
-import Layout from '../components/Layout'
+// Home.tsx
 
-const IndexPage = () => (
-  <Layout title="Home | Next.js + TypeScript Example">
-    <h1>Hello Next.js 👋</h1>
-    <p>
-      <Link href="/about">About</Link>
-    </p>
-  </Layout>
-)
+import React from 'react';
+import { useRouter } from 'next/router';
+import { useAuthContext } from '../hooks/useAuthContext';
+import Display from '../components/Display';
 
-export default IndexPage
+export default function Home() {
+  const router = useRouter();
+  const { user } = useAuthContext();
+
+  if (!user) {
+    router.push('/login');
+    return null;
+  }
+
+  return (
+    <main className='mb-2'>
+      <Display mode="2D" />
+      {/* OR */}
+      {/* <Display mode="3D" /> */}
+    </main>
+  );
+}
