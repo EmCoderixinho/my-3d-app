@@ -1,5 +1,4 @@
 // Home.tsx
-
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -15,10 +14,10 @@ export default function Home() {
   }
 
   return (
-    <main className='mb-2'>
-      <Display mode="2D" />
-      {/* OR */}
-      {/* <Display mode="3D" /> */}
-    </main>
+    <>
+    <div className='mb-2'>
+      <Display mode="3D" cord_x = {0} cord_y = {0} cord_z= {0}/>
+    </div>
+    </>
   );
 }

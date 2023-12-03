@@ -4,6 +4,13 @@ import { useRouter } from "next/router";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config";
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  getStorage,
+} from "firebase/storage";
+import { db, storage } from "../firebase/config";
 
 export const useSignup = () => {
   const [error, setError] = useState(null); // Flag to track if there is an error
@@ -19,25 +26,44 @@ export const useSignup = () => {
 
     try {
       // Create a new user using Firebase authentication
-      await createUserWithEmailAndPassword(auth, user.email, user.password).then(
-        (userCredential) => {
-          dispatch({ type: "LOGIN", payload: userCredential.user }); // Update user context with the newly created user
+      await createUserWithEmailAndPassword(
+        auth,
+        user.email,
+        user.password
+      ).then(async (userCredential) => {
+        dispatch({ type: "LOGIN", payload: userCredential.user }); // Update user context with the newly created user
 
-          const db = getFirestore();
+        // upload attached file to storage
+        const uploadPath = `items/${userCredential.user.uid}/${user.attachedFile.name}`;
+        const storageRef = ref(storage, uploadPath);
 
-          // Add user data to Firestore under the "users" collection
-          setDoc(doc(db, "users", userCredential.user.uid), {
-            id: userCredential.user.uid,
-            //add attached file and x_y_z
-          });
+        const uploadTask = uploadBytesResumable(storageRef, user.attachedFile);
 
-          if (!isCancelled) {
-            setError(null); // Reset error state
-            setIsPending(false); // Set pending to false
-            router.push("/"); // Navigate to the home page
-          }
+        // Wait for the upload to complete
+        await uploadTask;
+
+        // Get the download URL of the uploaded file
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+
+        console.log(downloadURL);
+
+        // Add user data to Firestore under the "users" collection
+        setDoc(doc(db, "users", userCredential.user.uid), {
+          id: userCredential.user.uid,
+          cord_x: 0,
+          cord_y: 0,
+          cord_z: 0,
+          attachedFile: downloadURL,
+          mode: "3D",
+          //add attached file and x_y_z
+        });
+
+        if (!isCancelled) {
+          setError(null); // Reset error state
+          setIsPending(false); // Set pending to false
+          router.push("/"); // Navigate to the home page
         }
-      );
+      });
     } catch (err) {
       console.error("Error during signup:", err);
 

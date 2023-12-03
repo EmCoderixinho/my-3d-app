@@ -9,18 +9,39 @@ export default function register() {
   // State variables to store user input
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [attachedFile, setAttachedFile] = useState(null);
+  const [fileError, setFileError] = useState("");
 
   // Custom hook for user authentication
   const { signup, isPending, error } = useSignup();
   const router = useRouter();
   const { user } = useAuthContext();
 
+  // Handle file selection in the file input
+  const handleFileChange = (e) => {
+    setAttachedFile(null);
+
+    let selected = e.target.files[0];
+
+    //console.log(selected);
+
+    if (!selected) return;
+
+    if (!selected.name.includes('.glb')) {
+      setFileError("Please select a 3D model in glb format");
+      return;
+    }
+
+    setFileError("");
+    setAttachedFile(selected);
+  };
+
   // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Call signup function from useSignup hook
-    signup({email, password});
+    signup({ email, password, attachedFile });
   };
 
   // Redirect to home page if user is already authenticated
@@ -56,6 +77,64 @@ export default function register() {
             onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
+        </div>
+
+        {/* File Attachment Section */}
+        <div className="mb-6">
+          {/* File input */}
+          <label
+            htmlFor="fileAttachment"
+            className="block text-gray-200 text-sm font-bold mb-2"
+          >
+            Attach File:
+          </label>
+          <div className="relative border-2 rounded-md px-4 py-3 bg-gray-700 flex items-center justify-between hover:border-blue-500 transition duration-150 ease-in-out">
+            <input
+              type="file"
+              id="fileAttachment"
+              name="fileAttachment"
+              onChange={handleFileChange}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              required
+            />
+            <div className="flex items-center">
+              {!attachedFile && (
+                // File not chosen
+                <>
+                  <svg
+                    className="w-6 h-6 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    ></path>
+                  </svg>
+                  <span className="ml-2 text-sm text-gray-300">
+                    Choose a file
+                  </span>
+                </>
+              )}
+
+              {attachedFile && (
+                // File chosen
+                <>
+                  <span className="ml-2 text-sm text-gray-300">
+                    Chosen file: {attachedFile.name}
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+          {/* File error message */}
+          {fileError !== "" && (
+            <p className="ml-2 text-sm text-red-600 mt-2">{fileError}</p>
+          )}
         </div>
 
         {/* Submit Button */}

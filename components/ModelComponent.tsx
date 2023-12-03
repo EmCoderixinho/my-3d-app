@@ -7,24 +7,27 @@ import { Mesh } from "three";
 
 interface ModelComponentProps {
   fileUrl: string;
-  whichMode: string;
+  mode: string;
+  cord_x: number;
+  cord_y: number;
+  cord_z: number;
 }
 
-const ModelComponent: React.FC<ModelComponentProps> = ({ fileUrl, whichMode }) => {
-  console.log("Rendering ModelComponent:", fileUrl);
+const ModelComponent: React.FC<ModelComponentProps> = (props: ModelComponentProps) => {
+  //console.log("Rendering ModelComponent:", fileUrl);
   const mesh = useRef<Mesh>(null!);
 
-  const gltf = useLoader(GLTFLoader, fileUrl);
+  const gltf = useLoader(GLTFLoader, props.fileUrl);
 
-  if(whichMode === '2D'){
+  if(props.mode === '2D'){
 
     return (
-        <mesh position={[0, 0, 0]} ref={mesh} rotation={[Math.PI / 2, 0, 0]} >{gltf.scene && <primitive object={gltf.scene} />}</mesh>
+        <mesh position={[props.cord_x, props.cord_y, props.cord_z]} ref={mesh} rotation={[0, 0, 0]} >{gltf.scene && <primitive object={gltf.scene} />}</mesh>
       );
   }
 
   return (
-    <mesh position={[0, 0, 0]} ref={mesh}>{gltf.scene && <primitive object={gltf.scene} />}</mesh>
+    <mesh position={[props.cord_x, props.cord_y, props.cord_z]} ref={mesh}>{gltf.scene && <primitive object={gltf.scene} />}</mesh>
   );
 };
 

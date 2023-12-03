@@ -1,8 +1,9 @@
 import { useAuthContext } from "../hooks/useAuthContext";
 import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
 
 const Layout = ({ children }) => {
-  const { authIsReady } = useAuthContext(); //checks is authentication has been done
+  const { user, authIsReady } = useAuthContext(); //checks is authentication has been done
 
   if (!authIsReady) // if the authentication has not been done it means we can load Loading page spinner
     return (
@@ -27,14 +28,25 @@ const Layout = ({ children }) => {
       </div>
     );
 
-  return (
-    authIsReady && ( // if the authentication has been done it means we can load the page
-      <>
-        <Navbar></Navbar>
-        {children}
-      </>
-    )
-  );
+    return (
+      authIsReady && (
+        <div className="flex">
+          {/* Sidebar */}
+          {user && <Sidebar />}
+  
+          {/* Main content */}
+          <div className="flex flex-col flex-1 overflow-hidden">
+            {/* Navbar */}
+            <Navbar />
+  
+            {/* Page content */}
+            <main className="flex-1 overflow-x-hidden overflow-y-auto">
+              {children}
+            </main>
+          </div>
+        </div>
+      )
+    );
 };
 
 export default Layout;
