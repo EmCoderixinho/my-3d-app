@@ -7,7 +7,7 @@ import { useCollection } from "../hooks/useCollection";
 const Sidebar = () => {
   const { user } = useAuthContext();
 
-  const { documents, error } = useCollection("coordinates", [
+  const { documents, error } = useCollection("users", [
     "uid",
     "==",
     user.uid,
@@ -17,7 +17,7 @@ const Sidebar = () => {
 
   useEffect(()=>{
 
-    console.log(documents);
+    //console.log(documents);
     
   }, [documents])
   

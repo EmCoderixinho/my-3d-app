@@ -12,6 +12,7 @@
     "@react-three/fiber": "^8.15.11",
     "@types/three": "^0.159.0",
     "firebase": "^10.6.0",
+    "firebase-admin": "^11.11.1",
     "next": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

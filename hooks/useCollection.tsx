@@ -19,6 +19,8 @@ export const useCollection = (coll, _query) => {
     if (query1.length > 0 && query1[2]) {
       // Construct the Firestore query
       q = query(collection(db, coll), where(query1[0], query1[1], query1[2]));
+      //console.log(q);
+      
     } else {
       // If the query is not provided or incomplete, return
       return;
@@ -29,6 +31,7 @@ export const useCollection = (coll, _query) => {
       q,
       (snapshot) => {
         let results = [];
+        
 
         // Extract data from each document in the snapshot
         snapshot.forEach((doc) => {
@@ -37,6 +40,7 @@ export const useCollection = (coll, _query) => {
 
         // Update state with the fetched documents
         setDocuments(results);
+        
         setError(null);
       },
       (error) => {
