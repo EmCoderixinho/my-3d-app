@@ -16,7 +16,7 @@ interface ModelComponentProps {
 const ModelComponent: React.FC<ModelComponentProps> = (
   props: ModelComponentProps
 ) => {
-  console.log("Rendering ModelComponent:", props.fileUrl);
+  //console.log("Rendering ModelComponent:", props.fileUrl);
 
   const mesh = useRef<Mesh>(null);
 

@@ -81,7 +81,7 @@ export const useFirestore = (coll) => {
     }
   };
 
-  const setDocument = async (document) => {
+  const setDocument = async (document) => { // function to update the database document with new data
     dispatchIfNotCanceled({ type: "IS_PENDING" });
 
     try {
@@ -91,7 +91,7 @@ export const useFirestore = (coll) => {
         throw new Error("Could not change the document");
       }
 
-      dispatchIfNotCanceled({ type: "ADD_DOCUMENT", payload: document });
+      dispatchIfNotCanceled({ type: "ADD_DOCUMENT", payload: document }); // if it was succesfull update response
     } catch (err) {
       dispatchIfNotCanceled({ type: "ERROR", payload: err.message });
     }

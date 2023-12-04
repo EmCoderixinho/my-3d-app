@@ -55,7 +55,7 @@ export const useSignup = () => {
           cord_z: user.cord_z,
           attachedFile: downloadURL,
           mode: "3D",
-          //add attached file and x_y_z
+          //add attached file and x_y_z and mode
         });
 
         if (!isCancelled) {
