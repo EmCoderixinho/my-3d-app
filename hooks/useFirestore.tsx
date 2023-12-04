@@ -86,7 +86,7 @@ export const useFirestore = (coll) => {
 
     try {
       try {
-        await setDoc(doc(db, coll, document.uid), document);
+        await setDoc(doc(db, coll, document.id), document);
       } catch (error) {
         throw new Error("Could not change the document");
       }

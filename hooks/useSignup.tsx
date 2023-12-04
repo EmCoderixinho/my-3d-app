@@ -50,9 +50,9 @@ export const useSignup = () => {
         // Add user data to Firestore under the "users" collection
         setDoc(doc(db, "users", userCredential.user.uid), {
           id: userCredential.user.uid,
-          cord_x: 0,
-          cord_y: 0,
-          cord_z: 0,
+          cord_x: user.cord_x,
+          cord_y: user.cord_y,
+          cord_z: user.cord_z,
           attachedFile: downloadURL,
           mode: "3D",
           //add attached file and x_y_z

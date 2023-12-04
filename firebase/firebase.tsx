@@ -1,4 +1,4 @@
-import { createFirebaseAdminApp } from './firebaseAdmin';
+import { createFirebaseAdminApp } from './FirebaseAdmin';
 import { getFirestore } from 'firebase-admin/firestore';
 import { NextApiRequest, NextApiResponse } from 'next';
 

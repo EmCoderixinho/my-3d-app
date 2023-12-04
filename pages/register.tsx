@@ -12,6 +12,10 @@ export default function register() {
   const [attachedFile, setAttachedFile] = useState(null);
   const [fileError, setFileError] = useState("");
 
+  const [cord_x, setCord_x] = useState(0);
+  const [cord_y, setCord_y] = useState(0);
+  const [cord_z, setCord_z] = useState(0);
+
   // Custom hook for user authentication
   const { signup, isPending, error } = useSignup();
   const router = useRouter();
@@ -27,7 +31,7 @@ export default function register() {
 
     if (!selected) return;
 
-    if (!selected.name.includes('.glb')) {
+    if (!selected.name.includes(".glb")) {
       setFileError("Please select a 3D model in glb format");
       return;
     }
@@ -41,7 +45,7 @@ export default function register() {
     e.preventDefault();
 
     // Call signup function from useSignup hook
-    signup({ email, password, attachedFile });
+    signup({ email, password, attachedFile, cord_x, cord_y, cord_z });
   };
 
   // Redirect to home page if user is already authenticated
@@ -76,6 +80,39 @@ export default function register() {
             className="w-full border-none bg-transparent outline-none placeholder-italic focus:outline-none"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
+          />
+        </div>
+
+        <div className="w-full transform border-b-2 border-indigo-500">
+          <label htmlFor="cord_x">Coordinate x:</label>
+          <input
+            id="cord_x"
+            type="number"
+            className="w-full border-none bg-transparent outline-none placeholder-italic focus:outline-none"
+            onChange={(e) => setCord_x(parseInt(e.target.value, 10))}
+            value={cord_x}
+          />
+        </div>
+
+        <div className="w-full transform border-b-2 border-indigo-500">
+          <label htmlFor="cord_y">Coordinate y:</label>
+          <input
+            id="cord_y"
+            type="number"
+            className="w-full border-none bg-transparent outline-none placeholder-italic focus:outline-none"
+            onChange={(e) => setCord_y(parseInt(e.target.value, 10))}
+            value={cord_y}
+          />
+        </div>
+
+        <div className="w-full transform border-b-2 border-indigo-500">
+          <label htmlFor="cord_z">Coordinate z:</label>
+          <input
+            id="cord_z"
+            type="number"
+            className="w-full border-none bg-transparent outline-none placeholder-italic focus:outline-none"
+            onChange={(e) => setCord_z(parseInt(e.target.value, 10))}
+            value={cord_z}
           />
         </div>
 

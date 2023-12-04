@@ -25,10 +25,6 @@ const ModelComponent: React.FC<ModelComponentProps> = (
     return useLoader(GLTFLoader, props.fileUrl);
   }, [props.fileUrl]);
 
-  useEffect(() => {
-    console.log("GLTF Loaded:", gltf);
-  }, [gltf]);
-
   if (!gltf || !gltf.scene) {
     console.error("GLTF not available");
     return null;
@@ -36,11 +32,7 @@ const ModelComponent: React.FC<ModelComponentProps> = (
 
   if (props.mode === "2D") {
     return (
-      <mesh
-        position={[props.cord_x, props.cord_y, props.cord_z]}
-        ref={mesh}
-        rotation={[0, 0, 0]}
-      >
+      <mesh position={[props.cord_x, props.cord_y, props.cord_z]} ref={mesh}>
         <primitive object={gltf.scene} />
       </mesh>
     );
